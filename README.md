@@ -1,68 +1,125 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#To Start the Project
+* npm install
+* npm start
 
-## Available Scripts
+# Take Home Exercise
 
-In the project directory, you can run:
+The exercise is to create a simple dashboard that allows the user to select cities for which they
+would like to see current and historical weather data.
 
-### `npm start`
+# User Stories
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+As a user, I should be able to
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+* add new cities to the dashboard -Completed
+* re-arrange the order the cities are displayed in - incomplete
+* remove a city from the dashboard- completed
+* see the historical data shown in a graph-completed
+* see the details for a given timepoint in the historical data when hovering or clicking - incomplete
 
-### `npm test`
+# Wireframe
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This is what we envision the app to look like:
 
-### `npm run build`
+    ┌───────────────────────────────────────────┐ ┌─────────────────────┐
+    │            Weather Report 2000            │ │     + Add City      │
+    └───────────────────────────────────────────┘ └─────────────────────┘
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                                                                   │
+    │    ┌────────────┐ ┌──────────────────────────────────────────┐    │
+    │    │   City 1   │ │                                          │    │
+    │    └────────────┘ │                                          │    │
+    │    ┌────────────┐ │                                          │    │
+    │    │            │ │             Historical Data              │    │
+    │    │  Current   │ │                                          │    │
+    │    │  Weather   │ │                                          │    │
+    │    │            │ │                                          │    │
+    │    └────────────┘ └──────────────────────────────────────────┘    │
+    └───────────────────────────────────────────────────────────────────┘
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                                                                   │
+    │    ┌────────────┐ ┌──────────────────────────────────────────┐    │
+    │    │   City 2   │ │                                          │    │
+    │    └────────────┘ │                                          │    │
+    │    ┌────────────┐ │                                          │    │
+    │    │            │ │             Historical Data              │    │
+    │    │  Current   │ │                                          │    │
+    │    │  Weather   │ │                                          │    │
+    │    │            │ │                                          │    │
+    │    └────────────┘ └──────────────────────────────────────────┘    │
+    └───────────────────────────────────────────────────────────────────┘
+                        (etc, for each city added)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Design
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Don't worry too much about the visual design. We are not looking for your design skills here, but
+your coding skills. So just keep the design basic.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Constraints
 
-### `npm run eject`
+The application needs to be written in Typescript, React, and HTML. You can use any other frameworks
+and libraries that you like. And you are welcome to use a template such as
+[create-react-app](https://github.com/facebook/create-react-app) or similar, Or not. It's entirely
+up to you. Just let us know if you have used a template and which one.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Optimize for
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Correct use of React and Typescript
+* Readability
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# APIs
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+These are the APIs that we expose. They are all hosted on:
+`https://bh-weather-data.s3.amazonaws.com/`.
 
-## Learn More
+## `/stations.json`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Returns the list of valid cities in an array:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    [
+        {
+            'name': 'New York, NY',
+            'id': 1
+        },
+        {
+            'name': 'Baltimore, MD',
+            'id': 2
+        },
 
-### Code Splitting
+        ...
+    ]
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## `/current/<city_id>.json`
 
-### Analyzing the Bundle Size
+Get current weather for the given `city_id`. Each data point will have this structure:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+    {
+        "time": "2019-05-01 23:00:00",
+        "time_local": "2019-05-02 00:00",
+        "temperature": 12.2,
+        "dewpoint": 7.9,
+        "humidity": 75,
+        "precipitation": 0.1,
+        "precipitation_3": null,
+        "precipitation_6": null,
+        "snowdepth": null,
+        "windspeed": 9.3,
+        "peakgust": 16.7,
+        "winddirection": 270,
+        "pressure": 1016,
+        "condition": 4
+    }
 
-### Making a Progressive Web App
+We do not envision that you display all the data.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## `/historical/<city_id>.json`
 
-### Advanced Configuration
+Get historical weather data for the given `city_id`. The data point returned will be the same as the
+above.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+# Time limit
 
-### Deployment
+We hope you can spend about two hours on this little project. If you finish faster, go you! :) If
+not, please limit yourself and don't spend much longer than two hours.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
